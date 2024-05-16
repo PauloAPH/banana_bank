@@ -1,5 +1,5 @@
 defmodule BananaBank.Users.Get do
-  alias BananaBank.Users.Users
+  alias BananaBank.Users.User
   alias BananaBank.Repo
 
   def call(id) do

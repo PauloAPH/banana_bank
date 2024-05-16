@@ -1,6 +1,7 @@
-defmodule BananaBank.Users.Users do
+defmodule BananaBank.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias BananaBank.Accounts.Account
 
   @requiredParamsCreate [:name, :password, :email, :cep]
   @requiredParamsUpdate [:name, :email, :cep]
@@ -11,7 +12,7 @@ defmodule BananaBank.Users.Users do
     field :password_hash, :string
     field :email, :string
     field :cep, :string
-
+    has_one :account, Account
     timestamps()
   end
 
@@ -32,10 +33,11 @@ defmodule BananaBank.Users.Users do
 
   defp doValidation(changeset, fields) do
     changeset
-    |> validate_required(@fields)
+    |> validate_required(fields)
     |> validate_length(:name, min: 3)
     |> validate_format(:email, ~r/@/)
     |> validate_length(:cep, is: 8)
+    |> validate_length(:password, min: 6)
   end
 
   defp add_password_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
